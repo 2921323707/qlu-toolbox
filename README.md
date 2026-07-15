@@ -1,50 +1,115 @@
-# 齐鲁工业大学分项成绩导出
+<p align="center">
+  <img src="assets/qlu-toolbox.png" width="128" alt="QLU 工具箱 Logo">
+</p>
 
-这个桌面工具会打开本机的 Edge、Chrome 或内置 Chromium。用户在浏览器中手动登录教务系统后，程序自动进入学生成绩查询页面，并把所选学期的分项成绩保存为 Excel 文件。
+# QLU 工具箱
 
-程序不会要求用户填写或复制账号、密码、验证码、Cookie，也不会把成绩发送到其他服务器。
-浏览器登录状态会保存在当前 Windows 用户的本地应用数据目录中，方便失败重试和下次使用；它不会离开本机。
+QLU 工具箱是一款面向齐鲁工业大学学生的本地校园效率桌面软件。v1.0 首个内置工具是“分项成绩导出”，后续工具将通过统一模块规范逐步加入。
 
-## 首次运行
+分项成绩导出会打开本机 Edge、Chrome 或兼容 Chromium。用户在浏览器中手动登录教务系统后，工具自动查询指定学期，并将经过校验的分项成绩保存为 Excel 文件。
 
-1. 安装 Python 3.10 或更高版本。
-2. 双击 `setup.bat`，等待依赖和备用 Chromium 安装完成。
+工具箱不会要求用户在客户端填写或复制账号、密码、验证码、Cookie，也不会把成绩发送到开发者服务器。浏览器登录状态、任务记录和设置默认保存在当前 Windows 用户的本地应用数据目录中。
+
+## 作者与反馈
+
+- 作者 / 维护者：[C1ouDreamW](https://github.com/C1ouDreamW)
+- 联系邮箱：[cloud_aaa@163.com](mailto:cloud_aaa@163.com)
+- Bug 与功能建议：[GitHub Issues](https://github.com/C1ouDreamW/qlu-toolbox/issues/new/choose)
+- 版本发布：[GitHub Releases](https://github.com/C1ouDreamW/qlu-toolbox/releases)
+
+提交 Bug 时请注明软件版本、Windows 版本、复现步骤、预期结果和实际结果。请勿在公开 Issue 中上传账号、密码、验证码、Cookie、成绩文件或未经脱敏的日志；涉及安全、隐私或个人信息的问题请通过邮箱私下联系作者。
+
+## 使用说明与免责声明
+
+本项目仅供个人学习、交流和非商业用途。未经开发者明确书面许可，禁止将本项目或其修改版本用于收费服务、商业产品、商业推广、代运营或其他营利活动。
+
+本项目不是齐鲁工业大学官方软件，与齐鲁工业大学及其教务系统服务商不存在隶属、授权、合作或担保关系。本项目不代表学校官方立场，学校系统变更可能导致部分功能暂时不可用。
+
+本软件按相应接口现状提供，**不保证功能持续可用**，也不保证导出结果绝对完整或准确。
+
+使用者应仅处理本人有权访问的数据，遵守学校规定、目标系统规则及适用法律法规，**并自行承担使用、误用或无法使用本软件产生的风险和后果**。在适用法律允许的范围内，开发者不承担由此造成的账号、数据、学业、设备或其他损失。
+
+## v1.0 当前模块
+
+- 首页：工具入口和最近任务。
+- 全部工具：搜索和打开内置工具。
+- 分项成绩导出：选择学年、学期和保存目录，完成登录后自动导出。
+- 任务记录：查看成功、失败、取消和异常中断记录。
+- 设置：默认目录、浏览器、主题和登录状态管理。
+- 更新提醒：启动时检查 GitHub Release，也可在设置中手动检查；不会自动下载安装。
+- 关于：版本、非商业说明和非官方免责声明。
+
+完整需求见 [`docs/PRD.md`](docs/PRD.md)。
+
+## 源码运行
+
+1. 安装 [uv](https://docs.astral.sh/uv/getting-started/installation/)；无需预先安装 Python，uv 会按 `.python-version` 准备 Python 3.12。
+2. 双击 `setup.bat`，等待 uv 同步锁定依赖并安装备用 Chromium。
 3. 双击 `run.bat`。
-4. 按教务系统相同的格式选择学年（如 `2025-2026`）和学期（第 1 或第 2 学期），然后选择保存位置。
-5. 点击“开始自动导出”。
-6. 在浏览器中手动登录；程序识别到登录成功后会自动查询、校验并导出成绩。
+
+也可以在 PowerShell 中运行：
+
+```powershell
+uv sync --locked --no-dev
+uv run --locked --no-dev python main.py
+```
+
+运行依赖声明在 `pyproject.toml`，精确版本由 `uv.lock` 锁定。修改依赖时使用 `uv add`、`uv remove` 和 `uv lock`，不维护 `requirements.txt`。
 
 ## 浏览器顺序
 
-程序依次尝试：
+默认依次尝试：
 
 1. Microsoft Edge
 2. Google Chrome
-3. Playwright 内置 Chromium
+3. 兼容 Chromium
+
+可在“设置”中调整首选浏览器。浏览器登录数据使用工具箱专用档案，不读取日常浏览器个人资料。
 
 ## 当前限制
 
 - 仅针对 `https://jw.qlu.edu.cn/` 当前使用的正方教务系统页面。
 - 登录等待时间为 15 分钟。
 - 学校调整页面地址或导出接口后，需要同步更新程序。
-- 当前为源码 MVP，后续可使用 PyInstaller 打包为无需 Python 的 EXE 安装包。
+- 当前为 v1.0 Alpha，提供 Windows 64 位免安装目录式构建；安装包尚未进行数字签名，Windows 可能显示来源未知提示。
+- 更新提醒依赖访问 GitHub；网络异常不会影响其他工具使用。
 
 ## 项目结构
 
 ```text
-app.py              桌面界面与浏览器自动化流程
-qlu_exporter.py     导出参数、文件识别与结果校验
-tests/              核心逻辑自动化测试
-references/         本地参考源码（已被 Git 忽略）
-setup.bat           首次安装依赖
-run.bat             启动程序
+main.py                              QLU 工具箱统一入口和 Worker 入口
+qlu_toolbox/app.py                   应用初始化、日志和单实例管理
+qlu_toolbox/core/                    设置、路径、任务数据库、工具注册
+qlu_toolbox/ui/                      主窗口、公共页面和设计系统
+qlu_toolbox/modules/grade_export/    分项成绩导出模块
+tests/                               核心逻辑自动化测试
+docs/PRD.md                          v1.0 产品需求文档
+CONTRIBUTING.md                      参与贡献与问题反馈说明
+SECURITY.md                          安全和隐私问题报告方式
+setup.bat                            源码环境初始化
+run.bat                              启动 QLU 工具箱
+pyproject.toml                       项目元数据与依赖声明
+uv.lock                              uv 跨平台依赖锁文件
 ```
-
-`references` 只用于保留实现依据，程序运行时不会加载其中的脚本。
 
 ## 开发验证
 
 ```powershell
-python -m unittest discover -s tests -v
-python -m py_compile app.py qlu_exporter.py
+uv run --locked python -B -m unittest discover -s tests -v
+uv run --locked python -B -m py_compile main.py
 ```
+
+## 构建 Windows Alpha
+
+双击 `build.bat`，或运行：
+
+```powershell
+uv sync --locked
+uv run --locked pyinstaller --noconfirm QLUToolbox.spec
+```
+
+目录式构建输出到 `dist/QLUToolbox/`。测试时必须保留整个目录，不能只复制其中的 `QLUToolbox.exe`。
+
+正式发布版将在 [GitHub Releases](https://github.com/C1ouDreamW/qlu-toolbox/releases) 提供完整压缩包、版本说明和 SHA-256 校验值。
+
+发布操作清单见 [`docs/RELEASE_CHECKLIST.md`](docs/RELEASE_CHECKLIST.md)。
