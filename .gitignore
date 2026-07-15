@@ -1,0 +1,23 @@
+# Python 虚拟环境与缓存
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# 构建与发布产物
+build/
+dist/
+*.spec
+
+# 本地工具与编辑器文件
+.agents/
+references/
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# 导出的成绩文件
+*.xlsx
+*.xls
