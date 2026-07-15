@@ -19,6 +19,12 @@ jobs:
           node-version: "22"
           cache: npm
 
+      - name: Set release version from tag
+        shell: pwsh
+        run: |
+          $version = "${{ github.ref_name }}".TrimStart("v")
+          npm version $version --no-git-tag-version --allow-same-version
+
       - name: Install uv
         uses: astral-sh/setup-uv@v5
         with:
@@ -33,8 +39,13 @@ jobs:
       - name: Install Playwright browsers
         run: uv run playwright install chromium
 
-      - name: Build
-        run: npm run dist
+      - name: Build application
+        run: |
+          npm run build:backend
+          npm run build
+
+      - name: Package Windows artifacts
+        run: npx electron-builder --win dir nsis
 
       - name: Create shortcut
         run: |
@@ -53,5 +64,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ github.ref_name }}
-          files: QLUToolbox_${{ github.ref_name }}.zip
+          files: |
+            QLUToolbox_${{ github.ref_name }}.zip
+            release/QLUToolbox_*_Setup.exe
+          fail_on_unmatched_files: true
           generate_release_notes: true

@@ -14,7 +14,8 @@
     "build:backend": "uv run --locked pyinstaller --noconfirm --distpath backend-dist --workpath backend-build QLUToolboxWorker.spec",
     "build": "npm run typecheck && npm run build:renderer && npm run build:electron",
     "dist": "npm run build:backend && npm run build && electron-builder --win dir",
-    "dist:zip": "npm run build:backend && npm run build && electron-builder --win zip"
+    "dist:zip": "npm run build:backend && npm run build && electron-builder --win zip",
+    "dist:installer": "npm run build:backend && npm run build && electron-builder --win nsis"
   },
   "dependencies": {
     "lucide-vue-next": "^0.525.0",
@@ -35,6 +36,7 @@
     "appId": "student.qlu.toolbox",
     "productName": "QLUToolbox",
     "asar": true,
+    "compression": "maximum",
     "directories": {
       "output": "release"
     },
@@ -52,8 +54,28 @@
     ],
     "win": {
       "icon": "assets/qlu-toolbox.ico",
-      "target": ["dir"],
+      "target": ["nsis"],
       "artifactName": "QLUToolbox_v${version}_${arch}.${ext}"
+    },
+    "nsis": {
+      "artifactName": "QLUToolbox_v${version}_${arch}_Setup.${ext}",
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "perMachine": false,
+      "selectPerMachineByDefault": false,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "QLUToolbox",
+      "runAfterFinish": true,
+      "deleteAppDataOnUninstall": false,
+      "installerLanguages": ["zh_CN"],
+      "displayLanguageSelector": false,
+      "installerIcon": "assets/qlu-toolbox.ico",
+      "uninstallerIcon": "assets/qlu-toolbox.ico",
+      "installerHeader": "installer-assets/installerHeader.bmp",
+      "installerSidebar": "installer-assets/installerSidebar.bmp",
+      "uninstallerSidebar": "installer-assets/installerSidebar.bmp",
+      "include": "installer-assets/installer.nsh"
     }
   }
 }
