@@ -37,21 +37,20 @@ jobs:
         run: npm run dist
 
       - name: Create shortcut
+        shell: pwsh
         run: |
-          $shell = New-Object -ComObject WScript.Shell
-          $shortcut = $shell.CreateShortcut("release\win-unpacked\QLU 工具箱.lnk")
-          $shortcut.TargetPath = (Resolve-Path "release\win-unpacked\QLU 工具箱.exe").Path
-          $shortcut.WorkingDirectory = (Resolve-Path "release\win-unpacked").Path
-          $shortcut.IconLocation = (Resolve-Path "release\win-unpacked\QLU 工具箱.exe").Path + ",0"
-          $shortcut.Save()
+          $exe = Get-ChildItem release\win-unpacked -Filter "*.exe" | Select-Object -First 1
+          if (-not $exe) { throw "No .exe found in release\win-unpacked" }
+          $ws = New-Object -ComObject WScript.Shell
+          $lnk = $ws.CreateShortcut("$($exe.Directory)\$($exe.BaseName).lnk")
+          $lnk.TargetPath = ".\$($exe.Name)"
+          $lnk.Save()
 
       - name: Package as zip
         run: |
           $version = "${{ github.ref_name }}"
-          $src = (Resolve-Path "release\win-unpacked").Path
-          $parent = Split-Path $src -Parent
-          Rename-Item $src "QLUToolbox"
-          Compress-Archive -Path "$parent\QLUToolbox" -DestinationPath "QLUToolbox_$version.zip"
+          Rename-Item release\win-unpacked QLUToolbox
+          Compress-Archive -Path release\QLUToolbox -DestinationPath "QLUToolbox_$version.zip"
 
       - name: Upload to Release
         uses: softprops/action-gh-release@v2
