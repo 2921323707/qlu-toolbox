@@ -7,7 +7,7 @@ from pathlib import Path
 from urllib.parse import parse_qs
 from zipfile import ZIP_DEFLATED, ZipFile
 
-from qlu_exporter import (
+from qlu_toolbox.modules.grade_export.domain import (
     ExportError,
     ExportOptions,
     build_export_body,
