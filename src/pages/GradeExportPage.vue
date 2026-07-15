@@ -3,7 +3,7 @@ import { computed, reactive, ref } from 'vue'
 import {
   ArrowLeft, FileSpreadsheet, FolderOpen, Play, Square, Check, Circle,
   Loader2, LogIn, ExternalLink, RotateCcw, ChevronDown, ChevronUp,
-  ShieldCheck, Wifi, ChevronDown as SelectArrow,
+  ShieldCheck, Wifi, ChevronDown as SelectArrow, Calculator, ArrowRight, Sparkles,
 } from 'lucide-vue-next'
 import { appStore } from '@/store'
 import type { BootstrapData, PageName } from '@/types'
@@ -132,6 +132,11 @@ function reset() {
         <div v-if="grade.resultPath" class="result-card">
           <div class="success-orb"><Check :size="28" /></div><h3>导出完成</h3><p>{{ grade.resultPath }}</p>
           <div><button class="primary-button" @click="api.openPath(grade.resultPath)"><ExternalLink :size="16" /> 打开文件</button><button class="secondary-button" @click="api.showItem(grade.resultPath)"><FolderOpen :size="16" /> 所在文件夹</button></div>
+          <button class="gpa-guide" @click="emit('navigate', 'gpa')">
+            <span class="gpa-guide-icon"><Calculator :size="21" /></span>
+            <span class="gpa-guide-copy"><small><Sparkles :size="13" /> 下一步</small><strong>用刚导出的成绩计算 GPA</strong></span>
+            <span class="gpa-guide-action">前往绩点计算器 <ArrowRight :size="17" /></span>
+          </button>
           <button class="text-button" @click="reset"><RotateCcw :size="15" /> 再次导出</button>
         </div>
         <div v-if="grade.logs.length" class="log-area">
