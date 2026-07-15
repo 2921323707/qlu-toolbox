@@ -23,6 +23,8 @@ from qlu_toolbox.core.settings import AppSettings, SettingsStore
 from qlu_toolbox.core.tasks import TaskStore
 from qlu_toolbox.modules.grade_export import MANIFEST
 from qlu_toolbox.modules.grade_export.domain import SEMESTERS, default_academic_year, validate_academic_year
+from qlu_toolbox.modules.gpa_calculator import MANIFEST as GPA_MANIFEST
+from qlu_toolbox.modules.gpa_calculator.domain import parse_grade_xlsx
 
 
 class Bridge:
@@ -61,6 +63,7 @@ class Bridge:
             "clearLogs": self.clear_logs,
             "startGradeExport": self.start_grade_export,
             "gradeCommand": self.grade_command,
+            "parseGradeWorkbook": self.parse_grade_workbook,
         }
         if method not in handlers:
             raise ValueError(f"未知操作：{method}")
@@ -74,6 +77,7 @@ class Bridge:
             "defaultAcademicYear": default_academic_year(),
             "semesters": SEMESTERS,
             "tool": asdict(MANIFEST),
+            "tools": [asdict(MANIFEST), asdict(GPA_MANIFEST)],
             "paths": {
                 "settings": str(self.settings_store.path),
                 "tasks": str(self.paths.data_dir / "tasks.sqlite3"),
@@ -98,6 +102,13 @@ class Bridge:
         self.settings = AppSettings(**current).normalized()
         self.settings_store.save(self.settings)
         return asdict(self.settings)
+
+    @staticmethod
+    def parse_grade_workbook(params: dict[str, Any]) -> dict[str, object]:
+        file_path = str(params.get("filePath", "")).strip()
+        if not file_path:
+            raise ValueError("请选择 XLSX 成绩文件")
+        return parse_grade_xlsx(file_path)
 
     def list_tasks(self, params: dict[str, Any]) -> list[dict[str, Any]]:
         limit = max(1, min(int(params.get("limit", 100)), 1000))

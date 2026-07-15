@@ -1,4 +1,4 @@
-const { contextBridge, ipcRenderer } = require('electron') as typeof import('electron')
+const { contextBridge, ipcRenderer, webUtils } = require('electron') as typeof import('electron')
 
 contextBridge.exposeInMainWorld('qlu', {
   invoke: (method: string, params?: Record<string, unknown>) => ipcRenderer.invoke('bridge:invoke', method, params),
@@ -8,6 +8,8 @@ contextBridge.exposeInMainWorld('qlu', {
     return () => ipcRenderer.removeListener('bridge:event', listener)
   },
   selectDirectory: (defaultPath?: string) => ipcRenderer.invoke('system:select-directory', defaultPath),
+  selectFile: (defaultPath?: string) => ipcRenderer.invoke('system:select-file', defaultPath),
+  getFilePath: (file: File) => webUtils.getPathForFile(file),
   openPath: (target: string) => ipcRenderer.invoke('system:open-path', target),
   showItem: (target: string) => ipcRenderer.invoke('system:show-item', target),
   openExternal: (url: string) => ipcRenderer.invoke('system:open-external', url),

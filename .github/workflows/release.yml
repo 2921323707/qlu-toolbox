@@ -37,13 +37,10 @@ jobs:
         run: npm run dist
 
       - name: Create shortcut
-        shell: pwsh
         run: |
-          $exe = Get-ChildItem release\win-unpacked -Filter "*.exe" | Select-Object -First 1
-          if (-not $exe) { throw "No .exe found in release\win-unpacked" }
           $ws = New-Object -ComObject WScript.Shell
-          $lnk = $ws.CreateShortcut("$($exe.Directory)\$($exe.BaseName).lnk")
-          $lnk.TargetPath = ".\$($exe.Name)"
+          $lnk = $ws.CreateShortcut("release\win-unpacked\QLUToolbox.lnk")
+          $lnk.TargetPath = ".\QLUToolbox.exe"
           $lnk.Save()
 
       - name: Package as zip

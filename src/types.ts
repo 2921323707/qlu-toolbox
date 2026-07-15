@@ -1,4 +1,4 @@
-export type PageName = 'home' | 'tools' | 'tasks' | 'settings' | 'about' | 'grade'
+export type PageName = 'home' | 'tools' | 'tasks' | 'settings' | 'about' | 'grade' | 'gpa'
 export type Theme = 'light' | 'dark' | 'system'
 
 export interface Settings {
@@ -29,6 +29,7 @@ export interface BootstrapData {
   defaultAcademicYear: string
   semesters: Record<string, string>
   tool: ToolManifest
+  tools: ToolManifest[]
   paths: Record<'settings' | 'tasks' | 'logs' | 'profiles' | 'data', string>
   metadata: Record<'author' | 'email' | 'github' | 'repository' | 'issues' | 'releases', string>
 }
@@ -36,4 +37,34 @@ export interface BootstrapData {
 export interface GradeEvent {
   type: 'status' | 'log' | 'success' | 'error' | 'cancelled'
   stage?: string; message?: string; path?: string; code?: string
+}
+
+export interface GPAScoreRow {
+  name: string
+  score: string
+  is_final: boolean
+}
+
+export interface GPACourse {
+  id: string
+  name: string
+  code: string
+  college: string
+  teaching_class: string
+  academic_year: string
+  semester: string
+  credit: number | null
+  components: GPAScoreRow[]
+  final_score: string
+  grade_point: number | null
+  included: boolean
+  issue: string
+}
+
+export interface GPAWorkbook {
+  fileName: string
+  filePath: string
+  rowCount: number
+  courses: GPACourse[]
+  warnings: string[]
 }

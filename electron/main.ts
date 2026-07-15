@@ -38,6 +38,13 @@ function registerIpc() {
     })
     return result.canceled ? null : result.filePaths[0]
   })
+  ipcMain.handle('system:select-file', async (_event, defaultPath?: string) => {
+    const result = await dialog.showOpenDialog(mainWindow!, {
+      title: '选择分项成绩文件', defaultPath, properties: ['openFile'],
+      filters: [{ name: 'Excel 工作簿', extensions: ['xlsx'] }],
+    })
+    return result.canceled ? null : result.filePaths[0]
+  })
   ipcMain.handle('system:open-path', async (_event, target: string) => shell.openPath(target))
   ipcMain.handle('system:show-item', (_event, target: string) => shell.showItemInFolder(target))
   ipcMain.handle('system:open-external', async (_event, url: string) => {
