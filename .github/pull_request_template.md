@@ -24,6 +24,8 @@
 - [ ] `uv run --locked python -B -m unittest discover -s tests -v`
 - [ ] `npm run typecheck`
 - [ ] `npm run build`
+- [ ] `npm run build:backend`
+- [ ] 已完成与目标平台对应的应用打包验证
 - [ ] 已完成与本次改动相关的手动验证
 - [ ] 不适用的检查已在下方说明原因
 

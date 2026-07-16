@@ -50,7 +50,16 @@ uv lock --check
 uv run --locked python -B -m unittest discover -s tests -v
 npm run typecheck
 npm run build
+npm run build:backend
 ```
+
+Windows 完整打包验证：
+
+```shell
+npx electron-builder --win dir --publish never
+```
+
+Pull Request 会通过 GitHub Actions 自动执行以上检查。其他平台的适配应补充对应平台的打包命令和真实设备验证。
 
 修改 Python 依赖请使用 `uv add` 或 `uv remove`，修改前端依赖请使用 `npm install`，并一并提交更新后的锁文件。
 
