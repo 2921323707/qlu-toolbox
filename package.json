@@ -15,7 +15,8 @@
     "build": "npm run typecheck && npm run build:renderer && npm run build:electron",
     "dist": "npm run build:backend && npm run build && electron-builder --win dir",
     "dist:zip": "npm run build:backend && npm run build && electron-builder --win zip",
-    "dist:installer": "npm run build:backend && npm run build && electron-builder --win nsis"
+    "dist:installer": "npm run build:backend && npm run build && electron-builder --win nsis",
+    "dist:mac": "npm run build:backend && npm run build && electron-builder --mac dmg"
   },
   "dependencies": {
     "lucide-vue-next": "^0.525.0",
@@ -46,15 +47,31 @@
       "package.json",
       "assets/**/*"
     ],
-    "extraResources": [
-      {
-        "from": "backend-dist/QLUToolboxWorker.exe",
-        "to": "backend/QLUToolboxWorker.exe"
-      }
-    ],
     "win": {
       "icon": "assets/qlu-toolbox.ico",
       "target": ["nsis"],
+      "artifactName": "QLUToolbox_v${version}_${arch}.${ext}",
+      "extraResources": [
+        {
+          "from": "backend-dist/QLUToolboxWorker.exe",
+          "to": "backend/QLUToolboxWorker.exe"
+        }
+      ]
+    },
+    "mac": {
+      "icon": "assets/qlu-toolbox.icns",
+      "category": "public.app-category.education",
+      "target": ["dmg"],
+      "artifactName": "QLUToolbox_v${version}_${arch}.${ext}",
+      "extraResources": [
+        {
+          "from": "backend-dist/QLUToolboxWorker",
+          "to": "backend/QLUToolboxWorker"
+        }
+      ]
+    },
+    "dmg": {
+      "title": "QLUToolbox ${version}",
       "artifactName": "QLUToolbox_v${version}_${arch}.${ext}"
     },
     "nsis": {

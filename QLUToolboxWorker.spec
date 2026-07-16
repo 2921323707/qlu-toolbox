@@ -1,8 +1,11 @@
 # -*- mode: python ; coding: utf-8 -*-
 
+import sys
+
 from PyInstaller.utils.hooks import collect_all
 
 playwright_datas, playwright_binaries, playwright_hiddenimports = collect_all("playwright")
+worker_icon = "assets/qlu-toolbox.icns" if sys.platform == "darwin" else "assets/qlu-toolbox.ico"
 
 analysis = Analysis(
     ["main.py"],
@@ -33,5 +36,5 @@ executable = EXE(
     upx=False,
     console=True,
     disable_windowed_traceback=False,
-    icon=["assets/qlu-toolbox.ico"],
+    icon=[worker_icon],
 )
