@@ -15,9 +15,15 @@ export class PythonBridge {
   start() {
     const development = !app.isPackaged
     this.startError = ''
+    const pythonExecutable = process.platform === 'win32'
+      ? path.join(app.getAppPath(), '.venv', 'Scripts', 'python.exe')
+      : path.join(app.getAppPath(), '.venv', 'bin', 'python')
+    const workerExecutable = process.platform === 'win32'
+      ? 'QLUToolboxWorker.exe'
+      : 'QLUToolboxWorker'
     const program = development
-      ? (process.env.QLU_PYTHON || path.join(app.getAppPath(), '.venv', 'Scripts', 'python.exe'))
-      : path.join(process.resourcesPath, 'backend', 'QLUToolboxWorker.exe')
+      ? (process.env.QLU_PYTHON || pythonExecutable)
+      : path.join(process.resourcesPath, 'backend', workerExecutable)
     const args = development ? [path.join(app.getAppPath(), 'main.py'), '--bridge'] : ['--bridge']
     this.process = spawn(program, args, {
       cwd: development ? app.getAppPath() : process.resourcesPath,

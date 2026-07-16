@@ -16,7 +16,11 @@ function createWindow() {
     frame: false,
     show: false,
     backgroundColor: '#f4f7fb',
-    icon: path.join(app.getAppPath(), 'assets', 'qlu-toolbox.ico'),
+    icon: path.join(
+      app.getAppPath(),
+      'assets',
+      process.platform === 'win32' ? 'qlu-toolbox.ico' : 'qlu-toolbox.png',
+    ),
     webPreferences: {
       preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
