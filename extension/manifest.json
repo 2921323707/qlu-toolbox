@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "QLU ToolBox",
+  "version": "0.2.3",
+  "version_name": "0.2.3 · Browser / Desktop 1.1.0",
+  "description": "在齐鲁工业大学教务系统中本地查看成绩分项、估算加权 GPA 并导出 Excel。",
+  "permissions": [
+    "activeTab",
+    "scripting"
+  ],
+  "background": {
+    "service_worker": "background/service-worker.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "QLU ToolBox",
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "assets/icons/icon16.png",
+      "32": "assets/icons/icon32.png"
+    }
+  },
+  "icons": {
+    "16": "assets/icons/icon16.png",
+    "32": "assets/icons/icon32.png",
+    "48": "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  }
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>QLU ToolBox</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="liquid-field" aria-hidden="true">
+    <span class="liquid-orb orb-blue"></span>
+    <span class="liquid-orb orb-cyan"></span>
+    <span class="liquid-orb orb-gold"></span>
+  </div>
+
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="brand-lockup">
+        <div class="brand-logo-wrap">
+          <img class="brand-logo" src="../assets/icons/icon.png" alt="">
+        </div>
+        <div class="brand-copy">
+          <p class="brand-kicker">QLU / BROWSER EDITION</p>
+          <h1>ToolBox</h1>
+        </div>
+      </div>
+      <span class="version-badge">0.2.3</span>
+    </header>
+
+    <main>
+      <div id="page-notice" class="page-notice" data-mode="checking" role="status" aria-live="polite">
+        <span class="notice-dot" aria-hidden="true"></span>
+        <p id="page-notice-text">正在识别当前页面…</p>
+      </div>
+
+      <section class="module-section" aria-labelledby="module-heading">
+        <div class="section-heading">
+          <div>
+            <p class="section-index">01 / NOW</p>
+            <h2 id="module-heading">现在可用</h2>
+          </div>
+          <span class="local-badge"><span></span>本地运行</span>
+        </div>
+        <ul id="module-list" class="module-list" aria-busy="true"></ul>
+      </section>
+
+    </main>
+
+    <footer>
+      <span class="privacy-mark" aria-hidden="true"></span>
+      <p>成绩只在当前页面处理，不上传、不留存。</p>
+    </footer>
+  </div>
+
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
